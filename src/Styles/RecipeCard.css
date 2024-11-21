@@ -1,35 +1,92 @@
-.recipe-card {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 16px;
-    width: 200px;
-    margin: 16px;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .recipe-card-image {
-    width: 100%;
-    border-radius: 8px;
-  }
-  
-  .recipe-card-title {
-    font-size: 18px;
-    margin: 8px 0;
-  }
-  
-  .recipe-card-description {
-    color: #555;
-    font-size: 14px;
-    margin: 8px 0;
-  }
-  
-  .recipe-card-button {
-    background: #ff6347;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 16px;
-    cursor: pointer;
-  }
-  
+.card {
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+.card-img-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.card-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-fav-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: white;
+  border-radius: 50%;
+  padding: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.card-content {
+  padding: 15px;
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.card-desc {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.card-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.card-time, 
+.card-difficulty {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-btn {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.card-btn:hover {
+  background-color: #2563eb;
+}
+
+.card-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.star {
+  color: #fbbf24;
+}
