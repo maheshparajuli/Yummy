@@ -1,92 +1,59 @@
-.card {
+.rc-card {
+  max-width: 300px;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
-  background-color: #fff;
-  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
 }
 
-.card:hover {
-  transform: scale(1.03);
+.rc-card:hover {
+  transform: scale(1.02);
 }
 
-.card-img-wrap {
-  position: relative;
-  width: 100%;
-}
-
-.card-img {
+.rc-img {
   width: 100%;
   height: 200px;
   object-fit: cover;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
-.card-fav-btn {
+.rc-fav-btn {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: white;
+  background: rgba(255,255,255,0.7);
   border-radius: 50%;
   padding: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.card-content {
+.rc-content {
   padding: 15px;
 }
 
-.card-title {
+.rc-title {
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-.card-desc {
+.rc-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
   color: #666;
-  margin-bottom: 15px;
 }
 
-.card-meta {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 15px;
-}
-
-.card-time, 
-.card-difficulty {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: #777;
-  font-size: 0.9rem;
-}
-
-.card-footer {
+.rc-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 10px 15px;
+  border-top: 1px solid #eee;
 }
 
-.card-btn {
-  background-color: #3b82f6;
-  color: white;
+.rc-btn {
+  background-color: #f0f0f0;
   border: none;
   padding: 8px 15px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.card-btn:hover {
-  background-color: #2563eb;
-}
-
-.card-rating {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
-.star {
-  color: #fbbf24;
+  border-radius: 4px;
 }
