@@ -137,10 +137,10 @@ function RecipeList() {
   }), [recipes, favorites]);
 
   return (
-    <div className="mx-auto max-w-7xl p-4">
+    <div className="m-4 max-w-7xl mx-auto">
       <Card className="p-4 mb-4">
-        <div className="flex items-center mb-4">
-          <h2 className="text-xl font-semibold">Recipes</h2>
+        <div className="flex mb-4">
+          <h2 className="text-xl font-bold">Recipes</h2>
           <div className="ml-auto text-sm">
             <span className="mr-4">{stats.total} recipes</span>
             <span className="mr-4">{stats.avgRating}⭐</span>
@@ -164,9 +164,7 @@ function RecipeList() {
                 key={cat}
                 onClick={() => handleCategoryFilter(cat)}
                 className={`px-3 py-1 rounded ${
-                  filterCategory === cat 
-                    ? 'bg-blue-500 text-white' 
-                    : 'bg-gray-100'
+                  filterCategory === cat ? 'bg-blue-500 text-white' : 'bg-gray-100'
                 }`}
               >
                 {cat}
@@ -194,9 +192,9 @@ function RecipeList() {
           </div>
 
           {showFilters && (
-            <div className="p-4 bg-gray-50 rounded space-y-4">
+            <div className="p-4 space-y-4 bg-gray-50 rounded">
               <div>
-                <label className="block mb-2">Difficulty</label>
+                <label className="mb-2 block">Difficulty</label>
                 <select 
                   value={filterSettings.difficulty}
                   onChange={(e) => handleFilterChange('difficulty', e.target.value)}
@@ -209,7 +207,7 @@ function RecipeList() {
               </div>
 
               <div>
-                <label className="block mb-2">Min Rating: {filterSettings.minRating}</label>
+                <label className="mb-2 block">Min Rating: {filterSettings.minRating}</label>
                 <input
                   type="range"
                   min="0"
@@ -222,7 +220,7 @@ function RecipeList() {
               </div>
 
               <div>
-                <label className="block mb-2">Max Time: {filterSettings.maxPrepTime}m</label>
+                <label className="mb-2 block">Max Time: {filterSettings.maxPrepTime}m</label>
                 <input
                   type="range"
                   min="0"
@@ -235,7 +233,7 @@ function RecipeList() {
               </div>
 
               <div>
-                <label className="block mb-2">Max Calories: {filterSettings.maxCalories}</label>
+                <label className="mb-2 block">Max Calories: {filterSettings.maxCalories}</label>
                 <input
                   type="range"
                   min="0"
@@ -251,7 +249,7 @@ function RecipeList() {
         </div>
       </Card>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         {recipes.map(recipe => (
           <RecipeCard
             key={recipe.id}
