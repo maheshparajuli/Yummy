@@ -1,153 +1,96 @@
-/* General Card Styling */
-.rc-card {
+.recipe-card {
   width: 300px;
-  background-color: #fff;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  font-family: 'Arial', sans-serif;
-  margin: 20px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
 }
 
-.rc-img-wrap {
+.recipe-img-wrap {
   position: relative;
-  width: 100%;
   height: 200px;
-  overflow: hidden;
 }
 
-.rc-img {
+.recipe-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
-.rc-fav-btn {
+.favorite-btn {
   position: absolute;
   top: 10px;
   right: 10px;
-  background: none;
+  background: rgba(255,255,255,0.8);
   border: none;
+  border-radius: 50%;
+  padding: 5px;
   cursor: pointer;
-  outline: none;
 }
 
-.rc-fav-btn:hover svg {
-  transform: scale(1.1);
-  transition: transform 0.2s ease-in-out;
+.recipe-content {
+  padding: 15px;
 }
 
-/* Content Section */
-.rc-content {
-  padding: 16px;
+.recipe-content h3 {
+  margin: 0 0 10px;
+  font-size: 1.2em;
 }
 
-.rc-title {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-  margin: 0 0 8px;
-}
-
-.rc-desc {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 12px;
-}
-
-.rc-meta {
+.recipe-meta {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 15px;
+  margin-bottom: 10px;
+  color: #666;
 }
 
-.rc-meta div {
+.recipe-meta div {
   display: flex;
   align-items: center;
-  font-size: 14px;
-  color: #444;
+  gap: 5px;
 }
 
-.rc-meta div svg {
-  margin-right: 4px;
-  color: #ff8c00;
-}
-
-/* Footer Section */
-.rc-footer {
+.recipe-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.rc-btn {
-  background-color: #007bff;
-  color: #fff;
+.recipe-actions button {
+  background: #f0f0f0;
   border: none;
-  padding: 8px 12px;
+  padding: 5px 10px;
   border-radius: 4px;
-  font-size: 14px;
   cursor: pointer;
 }
 
-.rc-btn:hover {
-  background-color: #0056b3;
-  transition: background-color 0.3s ease;
+.recipe-rating {
+  color: #ffc107;
 }
 
-.rc-rating {
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  color: #f39c12;
+.recipe-details {
+  margin-top: 15px;
+  border-top: 1px solid #e0e0e0;
+  padding-top: 15px;
 }
 
-.rc-rating .star {
-  margin-right: 4px;
+.recipe-details h4 {
+  margin: 0 0 10px;
+  font-size: 1em;
 }
 
-/* Ingredients List */
-.rc-ingredients {
-  margin-top: 12px;
-  list-style-type: disc;
+.recipe-details ul {
   padding-left: 20px;
-  color: #333;
+  margin: 0;
 }
 
-.rc-ingredient {
-  font-size: 14px;
-  margin-bottom: 6px;
+.recipe-details table {
+  width: 100%;
+  border-collapse: collapse;
 }
 
-/* Tooltips */
-.rc-meta div[title],
-.rc-btn[title],
-.rc-fav-btn[title] {
-  position: relative;
-}
-
-.rc-meta div[title]:hover::after,
-.rc-btn[title]:hover::after,
-.rc-fav-btn[title]:hover::after {
-  content: attr(title);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #333;
-  color: #fff;
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 4px;
-  white-space: nowrap;
-  opacity: 1;
-  pointer-events: none;
-}
-
-.rc-meta div[title]:hover::after,
-.rc-btn[title]:hover::after,
-.rc-fav-btn[title]:hover::after {
-  opacity: 1;
-  transition: opacity 0.3s ease-in-out;
+.recipe-details table td {
+  padding: 5px 0;
+  border-bottom: 1px solid #f0f0f0;
 }
