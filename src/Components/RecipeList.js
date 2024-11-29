@@ -1,266 +1,166 @@
-import React, { useState, useMemo } from 'react';
-import { Card } from '@/components/ui/card';
-import RecipeCard from './RecipeCard';
+import React, { useState } from 'react';
+import { X, Plus, Trash2 } from 'lucide-react';
 
-function RecipeList() {
-  const initialRecipes = [
-    {
-      id: 1,
-      name: 'Spaghetti Bolognese',
-      description: 'A classic Italian pasta dish with rich meat sauce.',
-      image: '/api/placeholder/200/200',
-      category: 'Italian',
-      rating: 4.5,
-      difficulty: 'Medium',
-      prepTime: '45',
-      ingredients: ['pasta', 'ground beef', 'tomato sauce', 'onions', 'garlic'],
-      servings: 4,
-      calories: 650
-    },
-    {
-      id: 2,
-      name: 'Chicken Curry',
-      description: 'A flavorful curry with tender chicken pieces.',
-      image: '/api/placeholder/200/200',
-      category: 'Indian',
-      rating: 4.8,
-      difficulty: 'Hard',
-      prepTime: '60',
-      ingredients: ['chicken', 'curry powder', 'coconut milk', 'onions', 'spices'],
-      servings: 6,
-      calories: 450
-    },
-    {
-      id: 3,
-      name: 'Vegetable Stir-Fry',
-      description: 'A quick and healthy stir-fry with fresh vegetables.',
-      image: '/api/placeholder/200/200',
-      category: 'Asian',
-      rating: 4.2,
-      difficulty: 'Easy',
-      prepTime: '20',
-      ingredients: ['mixed vegetables', 'soy sauce', 'garlic', 'ginger', 'oil'],
-      servings: 2,
-      calories: 300
-    }
-  ];
-
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filterCategory, setFilterCategory] = useState('All');
-  const [favorites, setFavorites] = useState([]);
-  const [recipes, setRecipes] = useState(initialRecipes);
-  const [filterSettings, setFilterSettings] = useState({
-    difficulty: 'All',
-    minRating: 0,
-    maxPrepTime: 120,
-    maxCalories: 1000
+function NewRecipeModal({ onClose, onAddRecipe }) {
+  const [recipe, setRecipe] = useState({
+    name: '',
+    description: '',
+    category: 'Italian',
+    difficulty: 'Easy',
+    prepTime: '30',
+    servings: 4,
+    calories: 500,
+    ingredients: [''],
+    image: '/api/placeholder/200/200'
   });
-  const [showFilters, setShowFilters] = useState(false);
 
-  const handleSearch = (event) => {
-    const term = event.target.value.toLowerCase();
-    setSearchTerm(term);
-    applyFilters(term, filterCategory, filterSettings);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setRecipe(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleCategoryFilter = (category) => {
-    setFilterCategory(category);
-    applyFilters(searchTerm, category, filterSettings);
+  const updateIngredient = (index, value) => {
+    const newIngredients = [...recipe.ingredients];
+    newIngredients[index] = value;
+    setRecipe(prev => ({ ...prev, ingredients: newIngredients }));
   };
 
-  const handleFilterChange = (key, value) => {
-    const newSettings = { ...filterSettings, [key]: value };
-    setFilterSettings(newSettings);
-    applyFilters(searchTerm, filterCategory, newSettings);
+  const addIngredient = () => {
+    setRecipe(prev => ({ ...prev, ingredients: [...prev.ingredients, ''] }));
   };
 
-  const applyFilters = (search, category, filters) => {
-    let filtered = [...initialRecipes];
+  const removeIngredient = (index) => {
+    const newIngredients = recipe.ingredients.filter((_, i) => i !== index);
+    setRecipe(prev => ({ ...prev, ingredients: newIngredients }));
+  };
 
-    if (search) {
-      filtered = filtered.filter(recipe =>
-        recipe.name.toLowerCase().includes(search) ||
-        recipe.description.toLowerCase().includes(search) ||
-        recipe.ingredients.some(ing => ing.toLowerCase().includes(search))
-      );
-    }
-
-    if (category !== 'All') {
-      filtered = filtered.filter(recipe => recipe.category === category);
-    }
-
-    if (filters.difficulty !== 'All') {
-      filtered = filtered.filter(recipe => recipe.difficulty === filters.difficulty);
-    }
-
-    filtered = filtered.filter(recipe => {
-      return recipe.rating >= filters.minRating &&
-             parseInt(recipe.prepTime) <= filters.maxPrepTime &&
-             recipe.calories <= filters.maxCalories;
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onAddRecipe({
+      ...recipe,
+      id: Date.now(),
+      rating: 0
     });
-
-    setRecipes(filtered);
   };
-
-  const toggleFavorite = (recipeId) => {
-    setFavorites(prev =>
-      prev.includes(recipeId)
-        ? prev.filter(id => id !== recipeId)
-        : [...prev, recipeId]
-    );
-  };
-
-  const handleSort = (type) => {
-    const sorted = [...recipes].sort((a, b) => {
-      switch(type) {
-        case 'rating':
-          return b.rating - a.rating;
-        case 'difficulty':
-          const order = { Easy: 1, Medium: 2, Hard: 3 };
-          return order[a.difficulty] - order[b.difficulty];
-        case 'time':
-          return parseInt(a.prepTime) - parseInt(b.prepTime);
-        case 'calories':
-          return a.calories - b.calories;
-        default:
-          return 0;
-      }
-    });
-    setRecipes(sorted);
-  };
-
-  const stats = useMemo(() => ({
-    total: recipes.length,
-    avgRating: (recipes.reduce((sum, r) => sum + r.rating, 0) / recipes.length).toFixed(1),
-    avgTime: Math.round(recipes.reduce((sum, r) => sum + parseInt(r.prepTime), 0) / recipes.length),
-    favorites: favorites.length
-  }), [recipes, favorites]);
 
   return (
-    <div className="m-4 max-w-7xl mx-auto">
-      <Card className="p-4 mb-4">
-        <div className="flex mb-4">
-          <h2 className="text-xl font-bold">Recipes</h2>
-          <div className="ml-auto text-sm">
-            <span className="mr-4">{stats.total} recipes</span>
-            <span className="mr-4">{stats.avgRating}⭐</span>
-            <span className="mr-4">{stats.avgTime}m</span>
-            <span>{stats.favorites}❤️</span>
-          </div>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+      <div className="bg-white p-6 rounded-lg w-96 max-h-[90vh] overflow-y-auto">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold">Add New Recipe</h2>
+          <button onClick={onClose}><X size={24} /></button>
         </div>
 
-        <div className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
-            placeholder="Search recipes..."
-            value={searchTerm}
-            onChange={handleSearch}
+            name="name"
+            value={recipe.name}
+            onChange={handleChange}
+            placeholder="Recipe Name"
+            required
             className="w-full p-2 border rounded"
           />
-          
-          <div className="flex gap-2">
-            {['All', 'Italian', 'Indian', 'Asian'].map(cat => (
-              <button
-                key={cat}
-                onClick={() => handleCategoryFilter(cat)}
-                className={`px-3 py-1 rounded ${
-                  filterCategory === cat ? 'bg-blue-500 text-white' : 'bg-gray-100'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
 
-          <div className="flex gap-2">
-            <select 
-              onChange={(e) => handleSort(e.target.value)}
+          <textarea
+            name="description"
+            value={recipe.description}
+            onChange={handleChange}
+            placeholder="Description"
+            required
+            className="w-full p-2 border rounded"
+          />
+
+          <div className="grid grid-cols-2 gap-2">
+            <select
+              name="category"
+              value={recipe.category}
+              onChange={handleChange}
               className="p-2 border rounded"
             >
-              <option value="">Sort by</option>
-              <option value="rating">Rating</option>
-              <option value="time">Time</option>
-              <option value="calories">Calories</option>
+              {['Italian', 'Indian', 'Asian', 'Mediterranean'].map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
             </select>
 
-            <button
-              onClick={() => setShowFilters(!showFilters)}
-              className="px-3 py-1 bg-gray-100 rounded"
+            <select
+              name="difficulty"
+              value={recipe.difficulty}
+              onChange={handleChange}
+              className="p-2 border rounded"
             >
-              {showFilters ? 'Hide' : 'Filters'}
+              {['Easy', 'Medium', 'Hard'].map(diff => (
+                <option key={diff} value={diff}>{diff}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="grid grid-cols-3 gap-2">
+            <input
+              type="number"
+              name="prepTime"
+              value={recipe.prepTime}
+              onChange={handleChange}
+              placeholder="Prep Time"
+              className="p-2 border rounded"
+            />
+            <input
+              type="number"
+              name="servings"
+              value={recipe.servings}
+              onChange={handleChange}
+              placeholder="Servings"
+              className="p-2 border rounded"
+            />
+            <input
+              type="number"
+              name="calories"
+              value={recipe.calories}
+              onChange={handleChange}
+              placeholder="Calories"
+              className="p-2 border rounded"
+            />
+          </div>
+
+          <div>
+            <label className="block mb-2">Ingredients</label>
+            {recipe.ingredients.map((ingredient, index) => (
+              <div key={index} className="flex mb-2">
+                <input
+                  type="text"
+                  value={ingredient}
+                  onChange={(e) => updateIngredient(index, e.target.value)}
+                  placeholder="Ingredient"
+                  className="flex-grow p-2 border rounded mr-2"
+                />
+                <button 
+                  type="button"
+                  onClick={() => removeIngredient(index)}
+                  className="p-2"
+                >
+                  <Trash2 size={20} />
+                </button>
+              </div>
+            ))}
+            <button 
+              type="button"
+              onClick={addIngredient}
+              className="flex items-center p-2 bg-gray-100 rounded"
+            >
+              <Plus size={16} className="mr-2" /> Add Ingredient
             </button>
           </div>
 
-          {showFilters && (
-            <div className="p-4 space-y-4 bg-gray-50 rounded">
-              <div>
-                <label className="mb-2 block">Difficulty</label>
-                <select 
-                  value={filterSettings.difficulty}
-                  onChange={(e) => handleFilterChange('difficulty', e.target.value)}
-                  className="p-2 border rounded"
-                >
-                  {['All', 'Easy', 'Medium', 'Hard'].map(diff => (
-                    <option key={diff} value={diff}>{diff}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="mb-2 block">Min Rating: {filterSettings.minRating}</label>
-                <input
-                  type="range"
-                  min="0"
-                  max="5"
-                  step="0.5"
-                  value={filterSettings.minRating}
-                  onChange={(e) => handleFilterChange('minRating', parseFloat(e.target.value))}
-                  className="w-full"
-                />
-              </div>
-
-              <div>
-                <label className="mb-2 block">Max Time: {filterSettings.maxPrepTime}m</label>
-                <input
-                  type="range"
-                  min="0"
-                  max="120"
-                  step="15"
-                  value={filterSettings.maxPrepTime}
-                  onChange={(e) => handleFilterChange('maxPrepTime', parseInt(e.target.value))}
-                  className="w-full"
-                />
-              </div>
-
-              <div>
-                <label className="mb-2 block">Max Calories: {filterSettings.maxCalories}</label>
-                <input
-                  type="range"
-                  min="0"
-                  max="1000"
-                  step="50"
-                  value={filterSettings.maxCalories}
-                  onChange={(e) => handleFilterChange('maxCalories', parseInt(e.target.value))}
-                  className="w-full"
-                />
-              </div>
-            </div>
-          )}
-        </div>
-      </Card>
-      
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {recipes.map(recipe => (
-          <RecipeCard
-            key={recipe.id}
-            recipe={recipe}
-            onFavorite={() => toggleFavorite(recipe.id)}
-            isFavorite={favorites.includes(recipe.id)}
-          />
-        ))}
+          <button 
+            type="submit" 
+            className="w-full p-2 bg-blue-500 text-white rounded"
+          >
+            Add Recipe
+          </button>
+        </form>
       </div>
     </div>
   );
 }
 
-export default RecipeList;
+export default NewRecipeModal;
