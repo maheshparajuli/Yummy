@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Heart, Clock, ChefHat, Info } from 'lucide-react';
+import { Heart, Clock, ChefHat, Info, Utensils, Flame, ShareTwo } from 'lucide-react';
 import './RecipeCard.css';
 
-function RecipeCard({ recipe, onFavorite, isFavorite: propIsFavorite }) {
+function RecipeCard({ recipe, onFavorite, isFavorite: propIsFavorite, onShare }) {
   const [isFavorite, setIsFavorite] = useState(propIsFavorite || false);
   const [showIngredients, setShowIngredients] = useState(false);
+  const [showNutritionalInfo, setShowNutritionalInfo] = useState(false);
 
   useEffect(() => {
     setIsFavorite(propIsFavorite);
@@ -17,6 +18,14 @@ function RecipeCard({ recipe, onFavorite, isFavorite: propIsFavorite }) {
 
   const toggleIngredients = () => {
     setShowIngredients(!showIngredients);
+  };
+
+  const toggleNutritionalInfo = () => {
+    setShowNutritionalInfo(!showNutritionalInfo);
+  };
+
+  const handleShareClick = () => {
+    onShare && onShare(recipe);
   };
 
   return (
@@ -56,24 +65,40 @@ function RecipeCard({ recipe, onFavorite, isFavorite: propIsFavorite }) {
           </div>
 
           <div className="rc-calories" title="Calories">
-            <Info size={16} />
+            <Flame size={16} />
             <span>{recipe.calories} kcal</span>
           </div>
 
           <div className="rc-servings" title="Servings">
-            <Info size={16} />
+            <Utensils size={16} />
             <span>{recipe.servings} servings</span>
           </div>
         </div>
 
         <div className="rc-footer">
-          <button
-            className="rc-btn"
-            onClick={toggleIngredients}
-            title={showIngredients ? 'Hide Ingredients' : 'View Ingredients'}
-          >
-            {showIngredients ? 'Hide Ingredients' : 'View Ingredients'}
-          </button>
+          <div className="rc-actions">
+            <button
+              className="rc-btn"
+              onClick={toggleIngredients}
+              title={showIngredients ? 'Hide Ingredients' : 'View Ingredients'}
+            >
+              {showIngredients ? 'Hide Ingredients' : 'View Ingredients'}
+            </button>
+            <button
+              className="rc-btn"
+              onClick={toggleNutritionalInfo}
+              title={showNutritionalInfo ? 'Hide Nutrition' : 'View Nutrition'}
+            >
+              {showNutritionalInfo ? 'Hide Nutrition' : 'View Nutrition'}
+            </button>
+            <button
+              className="rc-btn"
+              onClick={handleShareClick}
+              title="Share Recipe"
+            >
+              <ShareTwo size={16} />
+            </button>
+          </div>
 
           <div className="rc-rating" title="User Rating">
             <span className="star">★</span>
@@ -89,6 +114,22 @@ function RecipeCard({ recipe, onFavorite, isFavorite: propIsFavorite }) {
               </li>
             ))}
           </ul>
+        )}
+
+        {showNutritionalInfo && recipe.nutritionalInfo && (
+          <div className="rc-nutritional-info">
+            <h4>Nutritional Information</h4>
+            <table>
+              <tbody>
+                {Object.entries(recipe.nutritionalInfo).map(([key, value]) => (
+                  <tr key={key}>
+                    <td>{key}</td>
+                    <td>{value}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         )}
       </div>
     </div>
